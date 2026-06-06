@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    font-weight: 700; /* Bold text */
+    margin: 20px;
+}
+
+input,
+textarea {
+    font-weight: 700; /* Bold input text */
+    font-size: 16px;
+    margin: 10px;
+    padding: 8px;
+    width: 300px;
+}
+
+label,
+h1,
+h2,
+h3,
+p,
+a {
+    font-weight: 700;
+}
+
+/* Add margins and padding to forms */
+form {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    width: 400px;
+}
+
+/* Style buttons */
+input[type="submit"] {
+    margin-top: 10px;
+    padding: 8px 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Make headings bold */
+h1, h2, h3 {
+    font-weight: bold;
+}
