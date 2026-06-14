@@ -1,44 +1,208 @@
 body {
     font-family: Arial, sans-serif;
-    font-weight: 700; /* Bold text */
-    margin: 20px;
+    background: linear-gradient(to right, #74ebd5, #ACB6E5);
+    margin: 0;
+    padding: 30px;
 }
 
-input,
-textarea {
-    font-weight: 700; /* Bold input text */
-    font-size: 16px;
-    margin: 10px;
-    padding: 8px;
-    width: 300px;
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.2);
 }
 
-label,
-h1,
-h2,
-h3,
-p,
-a {
-    font-weight: 700;
+h1 {
+    text-align: center;
+    color: #4b0082;
+    margin-bottom: 20px;
 }
 
-/* Add margins and padding to forms */
 form {
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    width: 400px;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-/* Style buttons */
-input[type="submit"] {
-    margin-top: 10px;
-    padding: 8px 15px;
-    font-weight: bold;
+input[type="text"] {
+    width: 300px;
+    padding: 12px;
+    border: 2px solid #6a5acd;
+    border-radius: 8px;
+}
+
+button {
+    padding: 12px 18px;
+    background: #6a5acd;
+    color: white;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
 }
 
-/* Make headings bold */
-h1, h2, h3 {
+button:hover {
+    background: #483d8b;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th {
+    background: #6a5acd;
+    color: white;
+    padding: 15px;
+    border: 2px solid white;
+}
+
+td {
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: #f3f0ff;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+tr:hover {
+    background-color: #dcd6ff;
+}
+
+/* BUTTONS */
+.edit-btn {
+    background: #28a745;
+    color: white;
+    padding: 8px 14px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+    padding: 8px 14px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.edit-btn:hover {
+    background: #1f7a34;
+}
+
+.delete-btn:hover {
+    background: #b52a37;
+}
+
+/* PAGINATION */
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    display: inline-block;
+    text-decoration: none;
+    background: #6a5acd;
+    color: white;
+    padding: 8px 14px;
+    margin: 3px;
+    border-radius: 5px;
+}
+
+.pagination a:hover {
+    background: #483d8b;
+}
+.edit-container {
+    width: 60%;
+    margin: 50px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.2);
+}
+
+.edit-container h1 {
+    text-align: center;
+    color: #6a5acd;
+    margin-bottom: 20px;
+}
+
+.edit-container label {
+    display: block;
     font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.edit-container input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #6a5acd;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.edit-container textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px;
+    border: 2px solid #6a5acd;
+    border-radius: 8px;
+    resize: none;
+    box-sizing: border-box;
+}
+
+.edit-container button {
+    width: 100%;
+    margin-top: 20px;
+    background: #28a745;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.edit-container button:hover {
+    background: #218838;
+}
+.edit-container button {
+    width: 100%;
+    margin-top: 20px;
+    background: #0400ff8d;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.edit-container button:hover {
+    background: #0056b3;
+}
+.add-btn {
+    display: inline-block;
+    background: #ff9800;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.add-btn:hover {
+    background: #e68900;
 }

@@ -1,47 +1,54 @@
 <?php
-session_start();
-
-if(!isset($_SESSION['user'])){
-    header("Location: login.php");
-    exit();
-}
-?>
-<?php
-include 'config.php';
+include 'db.php';
 
 $id = $_GET['id'];
 
-if(isset($_POST['update'])){
+$result = mysqli_query($conn, "SELECT * FROM posts WHERE id=$id");
+$row = mysqli_fetch_assoc($result);
 
+if(isset($_POST['update']))
+{
     $title = $_POST['title'];
     $content = $_POST['content'];
 
-    $sql = "UPDATE posts
-            SET title='$title',
-                content='$content'
-            WHERE id=$id";
+    mysqli_query($conn,
+    "UPDATE posts
+     SET title='$title', 
+         content='$content'
+     WHERE id=$id");
 
-    mysqli_query($conn,$sql);
-
-    header("Location:index.php");
+    header("Location: display.php");
 }
-
-$sql = "SELECT * FROM posts WHERE id=$id";
-$result = mysqli_query($conn,$sql);
-$row = mysqli_fetch_assoc($result);
 ?>
 
-<form method="POST">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Post</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-Title:
-<input type="text" name="title"
-value="<?php echo $row['title']; ?>"><br><br>
+<div class="edit-container">
 
-Content:
-<textarea name="content"><?php echo $row['content']; ?></textarea><br><br>
+    <h1>Edit Post</h1>
 
-<input type="submit"
-name="update"
-value="Update">
+    <form method="POST">
 
-</form>
+        <label>Title</label>
+        <input type="text" name="title"
+               value="<?php echo $row['title']; ?>">
+
+        <label>Content</label>
+        <textarea name="content"><?php echo $row['content']; ?></textarea>
+
+        <button type="submit" name="update">
+            Update Post
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

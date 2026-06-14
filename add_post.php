@@ -1,32 +1,46 @@
-<link rel="stylesheet" href="style.css">
 <?php
-session_start();
+include 'db.php';
 
-if(!isset($_SESSION['user'])){
-    header("Location: login.php");
-    exit();
-}
-?>
-<?php
-include 'config.php';
-
-if(isset($_POST['submit'])){
+if(isset($_POST['submit']))
+{
     $title = $_POST['title'];
     $content = $_POST['content'];
 
-    $sql = "INSERT INTO posts(title, content)
-            VALUES('$title', '$content')";
+    mysqli_query($conn,
+    "INSERT INTO posts(title, content)
+     VALUES('$title', '$content')");
 
-    mysqli_query($conn, $sql);
+    header("Location: display.php");
 }
 ?>
 
-<form method="POST">
-    Title:
-    <input type="text" name="title"><br><br>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Post</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    Content:
-    <textarea name="content"></textarea><br><br>
+<div class="edit-container">
 
-    <input type="submit" name="submit" value="Add Post">
-</form>
+    <h1>Add New Post</h1>
+
+    <form method="POST">
+
+        <label>Title</label>
+        <input type="text" name="title" required>
+
+        <label>Content</label>
+        <textarea name="content" required></textarea>
+
+        <button type="submit" name="submit">
+            Add Post
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
