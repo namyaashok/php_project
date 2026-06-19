@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 include 'config.php';
@@ -20,7 +21,9 @@ if(isset($_POST['login'])){
            $user['password']
        )){
 
-        $_SESSION['user']=$username;
+        $_SESSION['user'] = $username;
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['role'] = $user['role'];
 
         header("Location:index.php");
 

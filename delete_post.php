@@ -1,4 +1,11 @@
+
 <?php
+session_start();
+
+if($_SESSION['role'] != 'admin')
+{
+    die("Access Denied");
+}
 session_start();
 
 if(!isset($_SESSION['user'])){
@@ -11,10 +18,13 @@ include 'config.php';
 
 $id = $_GET['id'];
 
-$sql = "DELETE FROM posts
-        WHERE id=$id";
+$stmt = $conn->prepare("DELETE FROM posts WHERE id=?");
 
-mysqli_query($conn,$sql);
+$stmt->bind_param("i", $id);
+
+$stmt->execute();
+
+$stmt->close();
 
 header("Location:index.php");
 ?>

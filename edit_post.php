@@ -3,21 +3,58 @@ include 'db.php';
 
 $id = $_GET['id'];
 
-$result = mysqli_query($conn, "SELECT * FROM posts WHERE id=$id");
-$row = mysqli_fetch_assoc($result);
+// Fetch existing post
+$stmt = $conn->prepare("SELECT * FROM posts WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+
+$stmt->close();
 
 if(isset($_POST['update']))
 {
-    $title = $_POST['title'];
-    $content = $_POST['content'];
+    $title = trim($_POST['title']);
+    $content = trim($_POST['content']);
 
-    mysqli_query($conn,
-    "UPDATE posts
-     SET title='$title', 
-         content='$content'
-     WHERE id=$id");
+    $errors = [];
 
-    header("Location: display.php");
+    // Validation
+    if(empty($title))
+    {
+        $errors[] = "Title is required";
+    }
+
+    if(empty($content))
+    {
+        $errors[] = "Content is required";
+    }
+
+    if(strlen($title) > 100)
+    {
+        $errors[] = "Title should not exceed 100 characters";
+    }
+
+    // Update only if validation passes
+    if(empty($errors))
+    {
+        $stmt = $conn->prepare("UPDATE posts SET title = ?, content = ? WHERE id = ?");
+        $stmt->bind_param("ssi", $title, $content, $id);
+
+        $stmt->execute();
+        $stmt->close();
+
+        header("Location: display.php");
+        exit();
+    }
+    else
+    {
+        foreach($errors as $error)
+        {
+            echo "<p style='color:red;'>$error</p>";
+        }
+    }
 }
 ?>
 
@@ -36,7 +73,8 @@ if(isset($_POST['update']))
     <form method="POST">
 
         <label>Title</label>
-        <input type="text" name="title"
+        <input type="text" 
+               name="title"
                value="<?php echo $row['title']; ?>">
 
         <label>Content</label>

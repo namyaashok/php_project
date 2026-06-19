@@ -3,14 +3,48 @@ include 'db.php';
 
 if(isset($_POST['submit']))
 {
-    $title = $_POST['title'];
-    $content = $_POST['content'];
+    $title = trim($_POST['title']);
+    $content = trim($_POST['content']);
 
-    mysqli_query($conn,
-    "INSERT INTO posts(title, content)
-     VALUES('$title', '$content')");
+    $errors = [];
 
-    header("Location: display.php");
+    // Validation
+    if(empty($title))
+    {
+        $errors[] = "Title is required";
+    }
+
+    if(empty($content))
+    {
+        $errors[] = "Content is required";
+    }
+
+    if(strlen($title) > 100)
+    {
+        $errors[] = "Title should not exceed 100 characters";
+    }
+
+    // Insert only if there are no errors
+    if(empty($errors))
+    {
+        $stmt = $conn->prepare("INSERT INTO posts (title, content) VALUES (?, ?)");
+
+        $stmt->bind_param("ss", $title, $content);
+
+        $stmt->execute();
+
+        $stmt->close();
+
+        header("Location: display.php");
+        exit();
+    }
+    else
+    {
+        foreach($errors as $error)
+        {
+            echo "<p style='color:red;'>$error</p>";
+        }
+    }
 }
 ?>
 
@@ -29,10 +63,14 @@ if(isset($_POST['submit']))
     <form method="POST">
 
         <label>Title</label>
-        <input type="text" name="title" required>
+        <input type="text"
+               name="title" 
+               required
+               maxlength="100">
 
         <label>Content</label>
-        <textarea name="content" required></textarea>
+        <textarea name="content" 
+                  required></textarea>
 
         <button type="submit" name="submit">
             Add Post

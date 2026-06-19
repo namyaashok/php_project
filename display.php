@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,15 +23,33 @@ $start = ($page - 1) * $limit;
 
 if(isset($_GET['search']) && $_GET['search'] != '')
 {
-    $search = $_GET['search'];
+    $search = "%" . $_GET['search'] . "%";
 
-    $sql = "SELECT * FROM posts
-            WHERE title LIKE '%$search%'
-            LIMIT $start, $limit";
+    // Fetch posts
+    $stmt = $conn->prepare(
+        "SELECT * FROM posts
+         WHERE title LIKE ?
+         LIMIT ?, ?"
+    );
 
-    $count_query = "SELECT COUNT(*) AS total
-                    FROM posts
-                    WHERE title LIKE '%$search%'";
+    $stmt->bind_param("sii", $search, $start, $limit);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+
+    // Count total posts
+    $count_stmt = $conn->prepare(
+        "SELECT COUNT(*) AS total
+         FROM posts
+         WHERE title LIKE ?"
+    );
+
+    $count_stmt->bind_param("s", $search);
+    $count_stmt->execute();
+
+    $count_result = $count_stmt->get_result();
+    $count_row = $count_result->fetch_assoc();
 }
 else
 {
@@ -41,7 +62,13 @@ else
                     FROM posts";
 }
 
-$result = mysqli_query($conn, $sql);
+if(!isset($_GET['search']) || $_GET['search'] == '')
+{
+    $result = mysqli_query($conn, $sql);
+
+    $count_result = mysqli_query($conn, $count_query);
+    $count_row = mysqli_fetch_assoc($count_result);
+}
 
 echo "<div class='container'>";
 echo "<h1>BLOG POSTS</h1>";
@@ -64,14 +91,17 @@ while($row = mysqli_fetch_assoc($result))
     echo "<td>".$row['title']."</td>";
     echo "<td>".$row['content']."</td>";
     echo "<td><a class='edit-btn' href='edit_post.php?id=".$row['id']."'>Edit</a></td>";
+    if($_SESSION['role'] == 'admin')
+{
     echo "<td><a class='delete-btn' href='delete_post.php?id=".$row['id']."' onclick='return confirm(\"Are you sure you want to delete this post?\")'>Delete</a></td>";
-    echo "</tr>";
+}
+else
+{
+    echo "<td>Not Allowed</td>";
+}
 }
 
 echo "</table>";
-
-$count_result = mysqli_query($conn, $count_query);
-$count_row = mysqli_fetch_assoc($count_result);
 
 $total_posts = $count_row['total'];
 $total_pages = ceil($total_posts / $limit);
